@@ -127,6 +127,12 @@ impl fmt::Write for Writer {
 	}
 }
 
+pub static WRITER: Writer = Writer {
+	column_position: 0,
+	colour_code: ColourCode::new(Colour::White, Colour::Black),
+	buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
+};
+
 pub fn print_test() {
 	use core::fmt::Write;
 
