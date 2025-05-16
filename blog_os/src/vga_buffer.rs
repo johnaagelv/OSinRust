@@ -6,6 +6,8 @@ use volatile::Volatile;
 use core::fmt;
 // Use the lazy static feature
 use lazy_static::lazy_static;
+// Use the spinning mutexes
+use spin::Mutex;
 
 // Colours
 #[allow(dead_code)]
@@ -130,13 +132,14 @@ impl fmt::Write for Writer {
 }
 
 lazy_static! {
-	pub static WRITER: Writer = Writer {
+	pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
 		column_position: 0,
 		colour_code: ColourCode::new(Colour::White, Colour::Black),
 		buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-	};
+	});
 }
 
+// TODO: DELETE THIS
 pub fn print_test() {
 	use core::fmt::Write;
 
