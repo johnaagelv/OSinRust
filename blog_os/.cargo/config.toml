@@ -4,6 +4,10 @@
 # Target added here instead of in the parameters to cargo/rustc
 target = "x86_64-blog_os.json"
 
+# Specify that the OS can run by the bootimage dependency to QEMU
+[target.'cfg(target_os = "none")']
+runner = "bootimage runner"
+
 [unstable]
 # Enable compiler builtin memory utilities
 build-std-features = ["compiler-builtins-mem"]

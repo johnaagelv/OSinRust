@@ -11,9 +11,11 @@ use core::panic::PanicInfo;
 static HELLO: &[u8] = b"Hello world";
 
 // Define the entry point as _start using C calling convention
+#[unsafe(no_mangle)]
 unsafe extern "C" fn _start() -> ! {
-	let vga_bugger = 0xb8000 as *mut u8;
+	let vga_buffer = 0xb8000 as *mut u8;
 
+	// Iterate through HELLO and use enumerate to get the index as i
 	for (i, &byte) in HELLO.iter().enumerate() {
 		unsafe {
 			*vga_buffer.offset(i as isize * 2) = byte;
