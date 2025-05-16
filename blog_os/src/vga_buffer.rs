@@ -19,7 +19,7 @@ macro_rules! println {
 	() => ($crate::print!("\n"));
 	($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
 }
-#[doc(hidden)]
+#[doc(hidden)] // Hide _print from documentation
 pub fn _print(args: fmt::Arguments) {
 	use core::fmt::Write;
 	WRITER.lock().write_fmt(args).unwrap();
@@ -153,19 +153,4 @@ lazy_static! {
 		colour_code: ColourCode::new(Colour::White, Colour::Black),
 		buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
 	});
-}
-
-// TODO: DELETE THIS
-pub fn print_test() {
-	use core::fmt::Write;
-
-	let mut writer = Writer {
-		column_position: 0,
-		colour_code: ColourCode::new(Colour::White, Colour::Black),
-		buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-	};
-
-	writer.write_byte(b'H');
-	writer.write_string("ello ");
-	write!(writer, "The numbers are {} and {}", 42, 1.0/3.0).unwrap();
 }
