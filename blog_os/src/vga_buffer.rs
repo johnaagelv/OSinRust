@@ -2,6 +2,8 @@
 
 // Use Volatile wrapper to ensure the the Buffer is not optimized away
 use volatile::Volatile;
+// Supporting Rust formatting
+use core::fmt;
 
 // Colours
 #[allow(dead_code)]
@@ -100,7 +102,17 @@ impl Writer {
 	}
 }
 
+// Implement Write using macros
+impl fmt::Write for Writer {
+	fn write_str(&mut self, s: &str) -> fmt::Result {
+		self.write_string(s);
+		Ok(())
+	}
+}
+
 pub fn print_test() {
+	use core::fmt::Write;
+
 	let mut writer = Writer {
 		column_position: 0,
 		colour_code: ColourCode::new(Colour::White, Colour::Black),
@@ -109,5 +121,5 @@ pub fn print_test() {
 
 	writer.write_byte(b'H');
 	writer.write_string("ello ");
-	writer.write_string("World! - This is the EW OS");
+	write!(writer, "The numbers are {} and {}", 42, 1.0/3.0).unwrap();
 }
