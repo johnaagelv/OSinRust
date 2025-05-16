@@ -1,0 +1,11 @@
+# in .cargo/config.toml
+
+[build]
+# Target added here instead of in the parameters to cargo/rustc
+target = "x86_64-blog_os.json"
+
+[unstable]
+# Enable compiler builtin memory utilities
+build-std-features = ["compiler-builtins-mem"]
+# Ensure we have a compiler core and builtins for our usage
+build-std = ["core", "compiler_builtins"]
