@@ -1,4 +1,4 @@
-// main.rs
+// in src/main.rs
 
 // Do not include the standard library
 #![no_std]
@@ -8,20 +8,13 @@
 // Include the PanicInfo for our own panic handler
 use core::panic::PanicInfo;
 
-static HELLO: &[u8] = b"Hello world";
+// Include the module vga_buffer
+mod vga_buffer;
 
 // Define the entry point as _start using C calling convention
 #[unsafe(no_mangle)]
 unsafe extern "C" fn _start() -> ! {
-	let vga_buffer = 0xb8000 as *mut u8;
-
-	// Iterate through HELLO and use enumerate to get the index as i
-	for (i, &byte) in HELLO.iter().enumerate() {
-		unsafe {
-			*vga_buffer.offset(i as isize * 2) = byte;
-			*vga_buffer.offset(i as isize * 2 + 1) = 0xb;
-		}
-	}
+	vga_buffer::print_test();
 	// Loop forever
 	loop {}
 }
